@@ -78,4 +78,4 @@ The system is built on a modular Django architecture with 8 dedicated applicatio
 - [x] **Role Isolation**: Branch managers cannot see other branches' queues.
 - [x] **E2E Stability**: Verified with 30+ branches and 200+ concurrent simulated tickets.
 
-Developed by **[Your Name]** for the **[Hackathon Name]**.
+Developed by **Himesh Kanthariya** for the **M-Indicator AI Hackathon 2026**.
