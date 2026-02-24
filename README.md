@@ -1,6 +1,48 @@
-# WaitFree — Multi-Tenant Queue Enforcement Platform
+# 🚦 WaitFree — Multi-Tenant Queue Enforcement Platform
 
-WaitFree is a robust, arrivals-window enforcement infrastructure designed to manage physical queues across multiple organizations and facilities. It eliminates the chaos of physical lines by providing a precise, role-based ecosystem for citizens, operators, and administrators.
+WaitFree is a robust **arrival-window and counter-enforcement infrastructure** designed to manage physical queues across multiple organizations and facilities.  
+It eliminates the chaos of physical lines by enforcing **who gets served — at the counter — not who stands longest**.
+
+This system is built for **real-world constraints**: walk-ins, staff pressure, lunch breaks, and high-volume public services.
+
+---
+
+## 🧠 Problem Statement
+
+Across hospitals, banks, and government offices, queue systems fail because:
+
+- People arrive early and crowd facilities
+- Walk-ins dominate and break order
+- Token systems only *display* queues, they don’t enforce them
+- Appointment systems don’t handle real-time variance
+- Staff face pressure, favoritism claims, and confrontation
+- Lunch breaks and counter closures collapse fairness
+
+**Root Cause**  
+> Service order is not enforced where it matters most — **at the counter**.
+
+As long as humans decide “who’s next”, queues will be unfair.
+
+---
+
+## 💡 Solution — What WaitFree Fixes
+
+WaitFree solves this by shifting control from **people → system**.
+
+### Core Principle
+> **Only the system decides who gets served next. Operators only execute.**
+
+### How WaitFree Solves the Problem
+
+- Citizens join queues **remotely**
+- ETA is calculated dynamically using real service throughput
+- Citizens arrive **close to their turn**, not hours early
+- Operators serve **only the system-assigned citizen**
+- Identity is verified at service time (name or mobile)
+- No skipping, no favoritism, no silent overrides
+- Every action is logged and auditable
+
+This converts queues from **social chaos** into **enforced infrastructure**.
 
 ---
 
