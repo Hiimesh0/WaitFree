@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard — WaitFree{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>👋 Welcome, {{ user.mobile_number }}</h1>
+        <p>Your citizen dashboard</p>
+    </div>
+    {% if active_tickets %}
+    <h2 style="font-size:1.2rem;margin-bottom:1rem;color:var(--primary-light);">Your Active Tickets</h2>
+    <div class="card-grid mb-3">
+        {% for t in active_tickets %}
+        <div class="card">
+            <div class="flex-between">
+                <span style="font-size:1.5rem;font-weight:800;color:var(--primary-light);">#{{ t.token_number }}</span>
+                <span class="status-badge status-{{ t.status }}">{{ t.get_status_display }}</span>
+            </div>
+            <p style="font-weight:600;margin-top:0.5rem;">{{ t.service.name }}</p>
+            <p class="text-muted" style="font-size:0.85rem;">{{ t.branch.name }}</p>
+            {% if t.status == 'waiting' and t.estimated_wait_time > 0 %}
+            <p style="color:var(--accent);font-weight:600;margin-top:0.5rem;">~{{ t.estimated_wait_time }} min wait</p>
+            {% elif t.status == 'serving' %}
+            <p style="color:var(--primary-light);font-weight:600;margin-top:0.5rem;">⚡ Being served now!</p>
+            {% endif %}
+            <a href="{% url 'queues:ticket' t.id %}" class="btn btn-primary btn-sm" style="margin-top:0.75rem;">View Ticket</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <div class="card-grid">
+        <a href="{% url 'facilities:facility_search' %}" class="card" style="text-decoration:none;"><div class="text-center">🔍<h3>Find Facility</h3></div></a>
+        <a href="{% url 'queues:my_tickets' %}" class="card" style="text-decoration:none;"><div class="text-center">🎫<h3>My Tickets</h3></div></a>
+        <a href="{% url 'notifications:citizen_notifications' %}" class="card" style="text-decoration:none;"><div class="text-center">🔔<h3>Alerts</h3></div></a>
+    </div>
+</div>
+{% endblock %}

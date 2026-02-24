@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Find a Facility - WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>🔍 Find a Facility</h1>
+        <p>Search for nearby facilities by name, organization, or location</p>
+    </div>
+
+    <form method="get" action="{% url 'facilities:facility_search' %}" class="search-bar">
+        <input type="text" name="q" class="form-control" placeholder="Search by facility name, organization, or city..."
+            value="{{ query }}">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    {% if branches %}
+    <div class="card-grid">
+        {% for branch in branches %}
+        <div class="card">
+            <h3 style="margin-bottom: 0.25rem;">{{ branch.name }}</h3>
+            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.5rem;">{{ branch.organization.name }}</p>
+            {% if branch.city %}
+            <p class="text-muted" style="font-size: 0.85rem;">📍 {{ branch.city }}{% if branch.address %} - {{ branch.address }}{% endif %}</p>
+            {% elif branch.address %}
+            <p class="text-muted" style="font-size: 0.85rem;">📍 {{ branch.address }}</p>
+            {% endif %}
+            <div style="margin-top: 1rem;">
+                <a href="{% url 'facilities:branch_detail' branch.id %}" class="btn btn-primary btn-sm">View Services &
+                    Queue</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">🏥</div>
+        <p>{% if query %}No facilities found for "{{ query }}". Try a different search.{% else %}No facilities available
+            yet.{% endif %}</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

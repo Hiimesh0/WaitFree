@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Organization Dashboard — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>🏛️ {{ organization.name }}</h1>
+        <p>Organization Dashboard</p>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ total_branches }}</div>
+            <div class="stat-label">Total Branches</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ active_branches }}</div>
+            <div class="stat-label">Active Branches</div>
+        </div>
+    </div>
+
+    <div class="card-grid mb-3">
+        <a href="{% url 'organizations:register_branch' %}" class="card" style="text-decoration: none;">
+            <div class="text-center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">➕</div>
+                <h3>Register New Branch</h3>
+                <p class="text-muted" style="font-size: 0.85rem;">Create a branch and assign credentials</p>
+            </div>
+        </a>
+        <a href="{% url 'organizations:branch_performance' %}" class="card" style="text-decoration: none;">
+            <div class="text-center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+                <h3>Branch Performance</h3>
+                <p class="text-muted" style="font-size: 0.85rem;">View stats across all branches</p>
+            </div>
+        </a>
+    </div>
+
+    {% if branches %}
+    <div class="card">
+        <div class="card-header">
+            <h3>Your Branches</h3>
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Branch</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for branch in branches %}
+                    <tr>
+                        <td><strong>{{ branch.name }}</strong></td>
+                        <td class="text-muted">{{ branch.address|default:"-" }}</td>
+                        <td>
+                            <span
+                                class="status-badge {% if branch.is_active %}status-open{% else %}status-closed{% endif %}">
+                                {% if branch.is_active %}Active{% else %}Inactive{% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

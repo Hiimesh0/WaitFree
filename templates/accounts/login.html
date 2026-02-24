@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Login — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+    <div class="page-header text-center">
+        <h1>Welcome Back</h1>
+        <p>Choose your login method</p>
+    </div>
+
+    <div class="card">
+        <div class="login-tabs" id="loginTabs">
+            <button class="login-tab active" onclick="switchTab('password')" id="tab-password">Staff Login</button>
+            <button class="login-tab" onclick="switchTab('otp')" id="tab-otp">Citizen (OTP)</button>
+        </div>
+
+        <!-- Password Login -->
+        <div id="form-password">
+            <form method="post" action="{% url 'accounts:login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="login_type" value="password">
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" class="form-control"
+                        placeholder="Enter your username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="form-control"
+                        placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Login</button>
+            </form>
+
+            <p class="text-center mt-2 text-muted" style="font-size: 0.85rem;">
+                For Global Admin, Organization, Branch, or Operator accounts
+            </p>
+        </div>
+
+        <!-- OTP Login -->
+        <div id="form-otp" style="display: none;">
+            <form method="post" action="{% url 'accounts:login' %}">
+                {% csrf_token %}
+                <input type="hidden" name="login_type" value="otp">
+
+                <p class="text-center mb-2" style="color: var(--text-secondary);">
+                    Citizens login using their mobile number and OTP verification.
+                </p>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Continue with Mobile OTP</button>
+            </form>
+        </div>
+    </div>
+
+    <p class="text-center mt-2">
+        <a href="{% url 'accounts:org_register' %}" style="color: var(--primary-light);">Register a new Organization
+            →</a>
+    </p>
+</div>
+
+<script>
+    function switchTab(tab) {
+        document.getElementById('form-password').style.display = tab === 'password' ? 'block' : 'none';
+        document.getElementById('form-otp').style.display = tab === 'otp' ? 'block' : 'none';
+        document.getElementById('tab-password').classList.toggle('active', tab === 'password');
+        document.getElementById('tab-otp').classList.toggle('active', tab === 'otp');
+    }
+</script>
+{% endblock %}

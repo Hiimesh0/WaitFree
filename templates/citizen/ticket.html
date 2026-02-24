@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Token #{{ ticket.token_number }} - WaitFree{% endblock %}
+{% block content %}
+<div class="container-sm">
+    <div class="ticket-card text-center">
+        <h1>Your Ticket</h1>
+        <div style="font-size:4rem;font-weight:800;color:var(--primary-light);margin:1rem 0;">#{{ ticket.token_number }}</div>
+        <div class="status-badge status-{{ ticket.status }}">{{ ticket.get_status_display }}</div>
+        <div class="ticket-info" style="margin-top:2rem;text-align:left;background:rgba(255,255,255,0.05);padding:1.5rem;border-radius:var(--radius-md);">
+            <p><strong>Service:</strong> {{ ticket.service.name }}</p>
+            <p><strong>Branch:</strong> {{ ticket.branch.name }}</p>
+            <p><strong>Position:</strong> #{{ ticket.position }}</p>
+            <p><strong>Joined:</strong> {{ ticket.joined_at|date:"h:i A" }}</p>
+        </div>
+        {% if ticket.status == 'waiting' %}
+        <div style="margin-top:2rem;font-size:1.5rem;font-weight:700;color:var(--accent);">
+            {% if ticket.estimated_wait_time > 0 %}~{{ ticket.estimated_wait_time }} min wait{% elif ticket.estimated_wait_time == -1 %}Queue Paused{% else %}Almost your turn!{% endif %}
+        </div>
+        {% elif ticket.status == 'serving' %}
+        <div style="margin-top:2rem;font-size:1.5rem;font-weight:700;color:var(--primary-light);">⚡ You are being served!</div>
+        {% endif %}
+    </div>
+    <div class="text-center" style="margin-top:2rem;">
+        <a href="{% url 'queues:my_tickets' %}" class="btn btn-secondary">My Tickets</a>
+    </div>
+</div>
+{% endblock %}

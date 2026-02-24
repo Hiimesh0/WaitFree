@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Organization — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+    <div class="page-header text-center">
+        <h1>Register Your Organization</h1>
+        <p>Create an account to manage your branches and queues</p>
+    </div>
+
+    <div class="card">
+        <form method="post" action="{% url 'accounts:org_register' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="org_name">Organization Name</label>
+                <input type="text" name="org_name" id="org_name" class="form-control"
+                    placeholder="e.g., City Hospital, State Bank" value="{{ org_name|default:'' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Admin Username</label>
+                <input type="text" name="username" id="username" class="form-control" placeholder="Choose a username"
+                    value="{{ username|default:'' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Contact Email</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="admin@organization.com"
+                    value="{{ email|default:'' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" name="phone" id="phone" class="form-control" placeholder="+91 98765 43210"
+                    value="{{ phone|default:'' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" class="form-control"
+                    placeholder="Minimum 8 characters" required minlength="8">
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Confirm Password</label>
+                <input type="password" name="password2" id="password2" class="form-control"
+                    placeholder="Repeat your password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Register Organization</button>
+        </form>
+    </div>
+
+    <p class="text-center mt-2">
+        Already registered? <a href="{% url 'accounts:login' %}">Login here</a>
+    </p>
+</div>
+{% endblock %}

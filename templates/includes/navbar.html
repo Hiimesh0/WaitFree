@@ -1,0 +1,38 @@
+<nav class="navbar">
+    <a href="{% url 'landing' %}" class="navbar-brand">
+        <span class="logo">⚡</span>
+        WaitFree
+    </a>
+
+    <ul class="navbar-links">
+        <li><a href="{% url 'landing' %}">Home</a></li>
+        <li><a href="{% url 'about' %}">About</a></li>
+        <li><a href="{% url 'facilities:facility_search' %}">Find Facility</a></li>
+
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'dashboard:router' %}">Dashboard</a></li>
+
+        {% if user.role == 'citizen' %}
+        <li><a href="{% url 'queues:my_tickets' %}">My Tickets</a></li>
+        <li><a href="{% url 'notifications:citizen_notifications' %}">Notifications</a></li>
+        {% endif %}
+        {% endif %}
+    </ul>
+
+    <div class="navbar-user">
+        {% if user.is_authenticated %}
+        <span class="role-badge badge-{{ user.role }}">{{ user.get_role_display }}</span>
+        <span style="color: var(--text-secondary); font-size: 0.9rem;">
+            {% if user.role == 'citizen' %}
+            {{ user.mobile_number }}
+            {% else %}
+            {{ user.username }}
+            {% endif %}
+        </span>
+        <a href="{% url 'accounts:logout' %}" class="btn btn-secondary btn-sm">Logout</a>
+        {% else %}
+        <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-sm">Login</a>
+        <a href="{% url 'accounts:org_register' %}" class="btn btn-secondary btn-sm">Register Org</a>
+        {% endif %}
+    </div>
+</nav>

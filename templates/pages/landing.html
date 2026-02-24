@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}WaitFree — Eliminate Queues, Not Patience{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Stop Waiting. Start Living.</h1>
+    <p>WaitFree is a multi-tenant queue management platform that lets citizens join queues remotely, track wait times in
+        real-time, and get notified when it's their turn.</p>
+    <div class="hero-actions">
+        <a href="{% url 'facilities:facility_search' %}" class="btn btn-primary btn-lg">Find a Facility</a>
+        <a href="{% url 'accounts:login' %}" class="btn btn-secondary btn-lg">Login</a>
+    </div>
+</section>
+
+<div class="container">
+    <div class="text-center mb-3">
+        <h2 style="font-size: 1.8rem; font-weight: 700;">The Problem</h2>
+        <p class="text-muted mt-1" style="max-width: 600px; margin: 0.5rem auto;">
+            People waste hours standing in lines at banks, hospitals, and government offices — without visibility,
+            without control, without dignity.
+        </p>
+    </div>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="icon">🔍</div>
+            <h3>Find Facilities</h3>
+            <p>Search for nearby facilities offering the services you need and see real-time queue status.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📱</div>
+            <h3>Join Remotely</h3>
+            <p>Join queues from your phone using OTP-based login. No need to physically wait in line.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🎫</div>
+            <h3>Get Your Token</h3>
+            <p>Receive a digital token with real-time ETA. Know exactly when it's your turn.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🔔</div>
+            <h3>Get Notified</h3>
+            <p>Receive alerts when your turn is approaching — so you can arrive just in time.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">📊</div>
+            <h3>For Organizations</h3>
+            <p>Manage branches, services, counters, and operators — with full visibility into performance.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon">🛡️</div>
+            <h3>Fair & Transparent</h3>
+            <p>Strict FIFO ordering. No skipping. No favoritism. Every citizen is treated equally.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

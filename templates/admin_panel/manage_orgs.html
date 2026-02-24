@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Organizations — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>🏛️ Manage Organizations</h1>
+        <p>Activate or deactivate organizations</p>
+    </div>
+
+    {% if organizations %}
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Organization</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Branches</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for org in organizations %}
+                <tr>
+                    <td><strong>{{ org.name }}</strong></td>
+                    <td>{{ org.contact_email|default:"-" }}</td>
+                    <td>{{ org.phone|default:"-" }}</td>
+                    <td>{{ org.branch_count_val }}</td>
+                    <td>
+                        <span class="status-badge {% if org.is_active %}status-open{% else %}status-closed{% endif %}">
+                            {% if org.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                    <td>
+                        <form method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="toggle">
+                            <input type="hidden" name="org_id" value="{{ org.id }}">
+                            <button type="submit"
+                                class="btn btn-sm {% if org.is_active %}btn-warning{% else %}btn-success{% endif %}">
+                                {% if org.is_active %}Deactivate{% else %}Activate{% endif %}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">🏛️</div>
+        <p>No organizations registered yet.</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-2">
+        <a href="{% url 'dashboard:admin_dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

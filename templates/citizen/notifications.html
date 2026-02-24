@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header"><h1>🔔 Notifications</h1></div>
+    {% if logs %}
+    {% for log in logs %}
+    <div class="card mb-2">
+        <div class="flex-between"><strong>{{ log.get_type_display }}</strong><span class="text-muted">{{ log.created_at|date:"h:i A" }}</span></div>
+        <p style="margin-top:0.5rem;">{{ log.message }}</p>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="card text-center"><p>No notifications yet.</p></div>
+    {% endif %}
+</div>
+{% endblock %}

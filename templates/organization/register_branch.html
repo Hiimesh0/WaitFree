@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Register Branch — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+    <div class="page-header text-center">
+        <h1>Register New Branch</h1>
+        <p>{{ organization.name }}</p>
+    </div>
+
+    <div class="card">
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="name">Branch Name</label>
+                <input type="text" name="name" id="name" class="form-control"
+                    placeholder="e.g., Main Branch, Downtown Office" value="{{ name|default:'' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea name="address" id="address" class="form-control" rows="2"
+                    placeholder="Branch address">{{ address|default:'' }}</textarea>
+            </div>
+
+            <hr style="border-color: var(--border); margin: 1.5rem 0;">
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">
+                These credentials will be used by the branch manager to login.
+            </p>
+
+            <div class="form-group">
+                <label for="branch_username">Branch Login Username</label>
+                <input type="text" name="branch_username" id="branch_username" class="form-control"
+                    placeholder="branch_username" value="{{ branch_username|default:'' }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="branch_password">Branch Login Password</label>
+                <input type="password" name="branch_password" id="branch_password" class="form-control"
+                    placeholder="Minimum 8 characters" required minlength="8">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Register Branch</button>
+        </form>
+    </div>
+
+    <div class="mt-2">
+        <a href="{% url 'organizations:dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

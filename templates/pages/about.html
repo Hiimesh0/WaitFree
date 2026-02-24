@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}About — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header text-center">
+        <h1>About WaitFree</h1>
+        <p>Building a world where no one wastes time standing in line.</p>
+    </div>
+
+    <div class="card" style="max-width: 800px; margin: 0 auto 2rem;">
+        <h3 style="margin-bottom: 1rem;">Our Mission</h3>
+        <p style="color: var(--text-secondary); line-height: 1.8;">
+            WaitFree is a multi-tenant queue enforcement platform designed to eliminate the chaos and inefficiency of
+            physical queues. We believe that every person's time is valuable, and no one should have to waste hours
+            standing in lines at banks, hospitals, or government offices.
+        </p>
+        <p style="color: var(--text-secondary); line-height: 1.8; margin-top: 1rem;">
+            Our platform enables organizations to manage their queues digitally, operators to serve citizens
+            efficiently, and citizens to track their position and estimated wait time in real-time — all while
+            maintaining strict FIFO ordering and complete transparency.
+        </p>
+    </div>
+
+    <div class="card-grid">
+        <div class="card text-center">
+            <h3 style="margin-bottom: 0.5rem;">🏛️ For Organizations</h3>
+            <p class="text-muted">Register your organization, create branches, manage services, counters, and operators
+                from a unified dashboard.</p>
+        </div>
+        <div class="card text-center">
+            <h3 style="margin-bottom: 0.5rem;">👨‍💼 For Operators</h3>
+            <p class="text-muted">Open your counter, serve citizens in FIFO order, manage no-shows — all from a simple
+                dashboard.</p>
+        </div>
+        <div class="card text-center">
+            <h3 style="margin-bottom: 0.5rem;">👤 For Citizens</h3>
+            <p class="text-muted">Login with your mobile OTP, find facilities, join queues remotely, and get notified
+                when it's your turn.</p>
+        </div>
+    </div>
+
+    <div class="card text-center mt-3" style="max-width: 800px; margin: 2rem auto;">
+        <h3 style="margin-bottom: 0.5rem;">Our Principles</h3>
+        <p class="text-muted">Strict FIFO · No Skipping · No Favoritism · Full Transparency · Complete Auditability</p>
+    </div>
+</div>
+{% endblock %}

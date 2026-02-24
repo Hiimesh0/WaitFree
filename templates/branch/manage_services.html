@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Services — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>⚙️ Manage Services</h1>
+        <p>{{ branch.name }}</p>
+    </div>
+
+    <!-- Add Service -->
+    <div class="card mb-2">
+        <div class="card-header">
+            <h3>Add New Service</h3>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+            <div style="display: grid; grid-template-columns: 2fr 1fr 2fr auto; gap: 1rem; align-items: end;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Service Name</label>
+                    <input type="text" name="name" class="form-control" placeholder="e.g., General Consultation"
+                        required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Avg Time (min)</label>
+                    <input type="number" name="avg_service_time" class="form-control" value="10" min="1" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Description</label>
+                    <input type="text" name="description" class="form-control" placeholder="Optional description">
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Service List -->
+    {% if services %}
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Avg Time</th>
+                    <th>Status</th>
+                    <th>Counters</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services %}
+                <tr>
+                    <td><strong>{{ service.name }}</strong></td>
+                    <td class="text-muted">{{ service.description|default:"-" }}</td>
+                    <td>{{ service.avg_service_time }} min</td>
+                    <td>
+                        <span
+                            class="status-badge {% if service.is_active %}status-open{% else %}status-closed{% endif %}">
+                            {% if service.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                    <td>{{ service.active_counter_count }}</td>
+                    <td>
+                        <div class="action-group">
+                            <form method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="toggle">
+                                <input type="hidden" name="service_id" value="{{ service.id }}">
+                                <button type="submit"
+                                    class="btn btn-sm {% if service.is_active %}btn-warning{% else %}btn-success{% endif %}">
+                                    {% if service.is_active %}Deactivate{% else %}Activate{% endif %}
+                                </button>
+                            </form>
+                            <form method="post" style="display: inline;"
+                                onsubmit="return confirm('Delete this service?')">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="service_id" value="{{ service.id }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">⚙️</div>
+        <p>No services yet. Create your first service above.</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-2">
+        <a href="{% url 'facilities:branch_dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

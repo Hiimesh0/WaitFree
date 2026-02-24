@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Operators — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>👨‍💼 Manage Operators</h1>
+        <p>{{ branch.name }}</p>
+    </div>
+
+    <div class="card mb-2">
+        <div class="card-header">
+            <h3>Create New Operator</h3>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 1rem; align-items: end;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" placeholder="operator_username" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Min 8 characters" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Assign to Counter</label>
+                    <select name="counter_id" class="form-control">
+                        <option value="">— No assignment —</option>
+                        {% for counter in counters %}
+                        <option value="{{ counter.id }}">Counter {{ counter.number }} ({{ counter.service.name }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+
+    {% if operators %}
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Assigned Counter</th>
+                    <th>Service</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for op in operators %}
+                <tr>
+                    <td><strong>{{ op.username }}</strong></td>
+                    <td>
+                        {% for a in assignments %}
+                        {% if a.user.id == op.id %}Counter {{ a.counter.number }}{% endif %}
+                        {% empty %}
+                        <span class="text-muted">Unassigned</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% for a in assignments %}
+                        {% if a.user.id == op.id %}{{ a.counter.service.name }}{% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <div class="action-group">
+                            <form method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="assign">
+                                <input type="hidden" name="operator_id" value="{{ op.id }}">
+                                <select name="counter_id" class="form-control"
+                                    style="display: inline; width: auto; padding: 0.3rem 0.5rem; font-size: 0.8rem;"
+                                    required>
+                                    {% for counter in counters %}
+                                    <option value="{{ counter.id }}">Counter {{ counter.number }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-secondary btn-sm">Reassign</button>
+                            </form>
+                            <form method="post" style="display: inline;"
+                                onsubmit="return confirm('Delete this operator?')">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="operator_id" value="{{ op.id }}">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">👨‍💼</div>
+        <p>No operators yet. Create your first operator above.</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-2">
+        <a href="{% url 'facilities:branch_dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

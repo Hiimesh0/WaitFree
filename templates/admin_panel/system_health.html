@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}System Health — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>💚 System Health</h1>
+        <p>Platform statistics and resource overview</p>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ total_users }}</div>
+            <div class="stat-label">Total Users</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ citizen_count }}</div>
+            <div class="stat-label">Citizens</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ operator_count }}</div>
+            <div class="stat-label">Operators</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ total_orgs }}</div>
+            <div class="stat-label">Organizations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ total_branches }}</div>
+            <div class="stat-label">Branches</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ total_services }}</div>
+            <div class="stat-label">Services</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ total_counters }}</div>
+            <div class="stat-label">Counters</div>
+        </div>
+    </div>
+
+    <h2 style="font-size: 1.2rem; margin: 2rem 0 1rem;">Today's Activity</h2>
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ total_tickets_today }}</div>
+            <div class="stat-label">Tickets Today</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ served_today }}</div>
+            <div class="stat-label">Served Today</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ no_show_today }}</div>
+            <div class="stat-label">No-Shows Today</div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <a href="{% url 'dashboard:admin_dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

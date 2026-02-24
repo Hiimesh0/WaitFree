@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Operator Dashboard — WaitFree{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>🎧 Operator: {{ user.username }}</h1>
+        <p>{{ user.branch.name }} — Counter {{ user.current_counter.number }} ({{ user.current_counter.service.name }})</p>
+    </div>
+    <div class="card mb-2">
+        <div class="flex-between">
+            <div>
+                <h3>Status: {% if user.current_counter.is_open %}<span style="color:var(--success)">OPEN</span>{% else %}<span style="color:var(--danger)">CLOSED</span>{% endif %}</h3>
+                <p class="text-muted">Toggle your counter</p>
+            </div>
+            <form method="post" action="{% url 'counters:toggle_counter' %}">{% csrf_token %}
+                <input type="hidden" name="action" value="{% if user.current_counter.is_open %}close{% else %}open{% endif %}">
+                <button type="submit" class="btn {% if user.current_counter.is_open %}btn-danger{% else %}btn-success{% endif %}">
+                    {% if user.current_counter.is_open %}Close{% else %}Open{% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+    {% if user.current_counter.is_open %}
+    <div class="card mb-2" style="border-color:var(--primary);">
+        <h3>⚡ Currently Serving</h3>
+        {% if current_ticket %}
+        <div class="flex-between">
+            <div>
+                <span class="token-box" style="font-size:3rem;font-weight:800;color:var(--primary-light);">#{{ current_ticket.token_number }}</span>
+                <p class="text-muted">Called: {{ current_ticket.called_at|date:"h:i A" }}</p>
+            </div>
+            <div class="action-group">
+                <form method="post" action="{% url 'queues:serve_next' %}" style="display:inline;">{% csrf_token %}
+                    <button type="submit" class="btn btn-success">Complete & Next</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="card text-center" style="padding:2rem;">
+            <p>No active ticket. <form method="post" action="{% url 'queues:serve_next' %}">{% csrf_token %}<button class="btn btn-primary">Serve Next</button></form></p>
+        </div>
+        {% endif %}
+    </div>
+    {% if waiting_tickets %}
+    <div class="card">
+        <h3>📂 Queue ({{ waiting_tickets.count }})</h3>
+        <table style="width:100%">
+            <thead><tr><th>#</th><th>Token</th><th>Wait</th></tr></thead>
+            <tbody>
+                {% for t in waiting_tickets %}<tr>
+                    <td>{{ t.position }}</td>
+                    <td><strong>#{{ t.token_number }}</strong></td>
+                    <td>{% if t.estimated_wait_time > 0 %}~{{ t.estimated_wait_time }}m{% else %}Next{% endif %}</td>
+                </tr>{% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="card text-center" style="padding:3rem;"><h3>Counter is Closed</h3></div>
+    {% endif %}
+</div>
+{% endblock %}

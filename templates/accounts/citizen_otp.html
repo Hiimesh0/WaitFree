@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Citizen Login - WaitFree{% endblock %}
+
+{% block content %}
+<div class="container-sm">
+    <div class="page-header text-center">
+        <h1>Citizen Login</h1>
+        <p>Login with your mobile number</p>
+    </div>
+
+    <div class="card">
+        {% if step == 'request' %}
+        <form method="post" action="{% url 'accounts:citizen_otp_request' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="mobile_number">Mobile Number</label>
+                <input type="tel" name="mobile_number" id="mobile_number" class="form-control"
+                    placeholder="Enter your 10-digit mobile number" required minlength="10" maxlength="15">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Send OTP</button>
+        </form>
+        {% elif step == 'verify' %}
+        <div class="text-center mb-2">
+            <p style="color: var(--text-secondary);">OTP sent to <strong style="color: var(--text-primary);">{{ mobile_number }}</strong></p>
+            {% if otp_display %}
+            <div
+                style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); padding: 1rem; margin: 1rem 0;">
+                <p style="color: var(--success); font-size: 0.85rem;">Demo Mode - Your OTP is:</p>
+                <p style="font-size: 2rem; font-weight: 800; color: var(--success); letter-spacing: 0.3em;">{{ otp_display }}</p>
+            </div>
+            {% endif %}
+        </div>
+        <form method="post" action="{% url 'accounts:citizen_otp_verify' %}">
+            {% csrf_token %}
+            <input type="hidden" name="mobile_number" value="{{ mobile_number }}">
+            <div class="form-group">
+                <label for="otp">Enter OTP</label>
+                <input type="text" name="otp" id="otp" class="form-control" placeholder="Enter 6-digit OTP" required
+                    maxlength="6" style="text-align: center; font-size: 1.5rem; letter-spacing: 0.5em;">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Verify & Login</button>
+        </form>
+        <p class="text-center mt-2">
+            <a href="{% url 'accounts:citizen_otp_request' %}"><- Request new OTP</a>
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

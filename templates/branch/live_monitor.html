@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Live Monitor{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header"><h1>📊 Live Monitor</h1><p>{{ branch.name }}</p></div>
+    {% for item in queue_data %}
+    <div class="card mb-2">
+        <div class="flex-between"><h3>{{ item.service.name }}</h3><span>{{ item.waiting }} waiting</span></div>
+        <div class="flex-wrap" style="margin-top:1rem;">
+            {% for t in item.tickets %}<span class="status-badge {% if t.status == 'serving' %}status-serving{% else %}status-waiting{% endif %}" style="margin:0.25rem;">#{{ t.token_number }}{% if t.status == 'serving' %}⚡{% endif %}</span>{% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

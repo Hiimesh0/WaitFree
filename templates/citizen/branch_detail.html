@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ branch.name }} - WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>{{ branch.name }}</h1>
+        <p>{{ branch.organization.name }}{% if branch.address %} . {{ branch.address }}{% endif %}</p>
+    </div>
+
+    {% if service_data %}
+    <div class="card-grid">
+        {% for item in service_data %}
+        <div class="card">
+            <div class="card-header">
+                <h3>{{ item.service.name }}</h3>
+                <span class="status-badge {% if item.open_counters > 0 %}status-open{% else %}status-closed{% endif %}">
+                    {% if item.open_counters > 0 %}{{ item.open_counters }} counter{{ item.open_counters|pluralize }}
+                    open{% else %}Closed{% endif %}
+                </span>
+            </div>
+
+            {% if item.service.description %}
+            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 0.75rem;">{{ item.service.description }}</p>
+            {% endif %}
+
+            <div class="flex-between" style="margin-bottom: 1rem;">
+                <div>
+                    <span style="color: var(--text-secondary); font-size: 0.85rem;">Waiting:</span>
+                    <strong style="color: var(--accent);">{{ item.waiting_count }}</strong>
+                </div>
+                <div>
+                    <span style="color: var(--text-secondary); font-size: 0.85rem;">Avg Time:</span>
+                    <strong>{{ item.service.avg_service_time }} min</strong>
+                </div>
+            </div>
+
+            <div class="action-group">
+                <a href="{% url 'queues:overview' item.service.id %}" class="btn btn-secondary btn-sm">View Queue</a>
+                {% if user.is_authenticated and user.role == 'citizen' %}
+                {% if item.open_counters > 0 %}
+                <form method="post" action="{% url 'queues:join_queue' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="service_id" value="{{ item.service.id }}">
+                    <button type="submit" class="btn btn-success btn-sm">Join Queue</button>
+                </form>
+                {% else %}
+                <span class="btn btn-secondary btn-sm" style="opacity: 0.5; cursor: not-allowed;">Queue Closed</span>
+                {% endif %}
+                {% elif not user.is_authenticated %}
+                <a href="{% url 'accounts:citizen_otp_request' %}" class="btn btn-primary btn-sm">Login to Join</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">🚫</div>
+        <p>No services available at this branch.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

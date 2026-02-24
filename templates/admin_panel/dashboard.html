@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>🛡️ Admin Dashboard</h1>
+        <p>Global system overview</p>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ total_orgs }}</div>
+            <div class="stat-label">Organizations</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ active_orgs }}</div>
+            <div class="stat-label">Active Orgs</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ total_branches }}</div>
+            <div class="stat-label">Branches</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ open_counters }}</div>
+            <div class="stat-label">Open Counters</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ today_tickets }}</div>
+            <div class="stat-label">Today's Tickets</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ waiting_now }}</div>
+            <div class="stat-label">Waiting Now</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ serving_now }}</div>
+            <div class="stat-label">Serving Now</div>
+        </div>
+    </div>
+
+    <div class="card-grid">
+        <a href="{% url 'dashboard:manage_orgs' %}" class="card" style="text-decoration: none;">
+            <div class="text-center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏛️</div>
+                <h3>Manage Organizations</h3>
+                <p class="text-muted" style="font-size: 0.85rem;">Activate / deactivate organizations</p>
+            </div>
+        </a>
+        <a href="{% url 'dashboard:global_monitor' %}" class="card" style="text-decoration: none;">
+            <div class="text-center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🌐</div>
+                <h3>Global Monitoring</h3>
+                <p class="text-muted" style="font-size: 0.85rem;">Real-time queue status across all branches</p>
+            </div>
+        </a>
+        <a href="{% url 'dashboard:system_health' %}" class="card" style="text-decoration: none;">
+            <div class="text-center">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💚</div>
+                <h3>System Health</h3>
+                <p class="text-muted" style="font-size: 0.85rem;">Users, tickets, and resource stats</p>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

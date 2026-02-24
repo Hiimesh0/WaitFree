@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}My Tickets — WaitFree{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>🎫 My Tickets</h1>
+    </div>
+    {% if active_tickets %}
+    <h2 style="margin-bottom:1rem;color:var(--primary-light);">Active Tickets</h2>
+    <div class="card-grid" style="margin-bottom:3rem;">
+        {% for t in active_tickets %}
+        <div class="card">
+            <div class="flex-between" style="margin-bottom:0.5rem;">
+                <span style="font-size:1.5rem;font-weight:800;color:var(--primary-light);">#{{ t.token_number }}</span>
+                <span class="status-badge status-{{ t.status }}">{{ t.get_status_display }}</span>
+            </div>
+            <p style="font-weight:600;margin-bottom:0.25rem;">{{ t.service.name }}</p>
+            <p class="text-muted" style="font-size:0.85rem;margin-bottom:1rem;">{{ t.branch.name }}</p>
+            {% if t.status == 'waiting' %}
+            <div style="background:rgba(255,255,255,0.05);border-radius:var(--radius-sm);padding:0.75rem;margin-bottom:1rem;">
+                <p style="font-size:0.85rem;">Est. Wait:</p>
+                <p style="font-size:1.25rem;font-weight:700;color:var(--accent);">{% if t.estimated_wait_time > 0 %}~{{ t.estimated_wait_time }} min{% else %}Next{% endif %}</p>
+            </div>
+            {% endif %}
+            <a href="{% url 'queues:ticket' t.id %}" class="btn btn-primary btn-block">Details</a>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if past_tickets %}
+    <h2 style="margin-bottom:1rem;color:var(--text-muted);">Past Tickets</h2>
+    <div class="card">
+        <table style="width:100%">
+            <thead><tr><th>Date</th><th>Token</th><th>Service</th><th>Status</th></tr></thead>
+            <tbody>
+                {% for t in past_tickets %}
+                <tr>
+                    <td>{{ t.joined_at|date:"M d" }}</td>
+                    <td><strong>#{{ t.token_number }}</strong></td>
+                    <td>{{ t.service.name }}</td>
+                    <td><span class="status-badge status-{{ t.status }}">{{ t.get_status_display }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Global Monitor — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header flex-between">
+        <div>
+            <h1>🌐 Global Monitoring</h1>
+            <p>Real-time queue status across all branches</p>
+        </div>
+        <a href="{% url 'dashboard:global_monitor' %}" class="btn btn-secondary btn-sm">🔄 Refresh</a>
+    </div>
+
+    {% if branches %}
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Branch</th>
+                    <th>Organization</th>
+                    <th>Waiting</th>
+                    <th>Serving</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for branch in branches %}
+                <tr>
+                    <td><strong>{{ branch.name }}</strong></td>
+                    <td>{{ branch.organization.name }}</td>
+                    <td>
+                        {% if branch.waiting_count > 0 %}
+                        <span style="color: var(--accent); font-weight: 600;">{{ branch.waiting_count }}</span>
+                        {% else %}
+                        <span class="text-muted">0</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if branch.serving_count > 0 %}
+                        <span style="color: var(--primary-light); font-weight: 600;">{{ branch.serving_count }}</span>
+                        {% else %}
+                        <span class="text-muted">0</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span
+                            class="status-badge {% if branch.is_active %}status-open{% else %}status-closed{% endif %}">
+                            {% if branch.is_active %}Active{% else %}Inactive{% endif %}
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">🌐</div>
+        <p>No active branches to monitor.</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-2">
+        <a href="{% url 'dashboard:admin_dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

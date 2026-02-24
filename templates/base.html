@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WaitFree — Eliminate queues, not patience. Multi-tenant queue management platform.">
+    <title>{% block title %}WaitFree{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    {% include 'includes/navbar.html' %}
+
+    {% if messages %}
+    <div class="container">
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="message message-{{ message.tags }}">
+                {% if message.tags == 'success' %}✅{% elif message.tags == 'error' %}❌{% elif message.tags == 'warning' %}⚠️{% else %}ℹ️{% endif %}
+                {{ message }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer">
+        <p>© 2026 WaitFree — Eliminate queues, not patience.</p>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Branch Performance — WaitFree{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1>📈 Branch Performance</h1>
+        <p>{{ organization.name }}</p>
+    </div>
+
+    {% if branches %}
+    <div class="card-grid">
+        {% for branch in branches %}
+        <div class="card">
+            <h3 style="margin-bottom: 0.5rem;">{{ branch.name }}</h3>
+            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem;">{{ branch.address|default:"No Address" }}</p>
+            <div class="flex-between mb-1">
+                <span class="text-muted">Services</span>
+                <strong>{{ branch.service_count }}</strong>
+            </div>
+            <div class="flex-between mb-1">
+                <span class="text-muted">Counters</span>
+                <strong>{{ branch.counter_count }}</strong>
+            </div>
+            <div class="flex-between">
+                <span class="text-muted">Status</span>
+                <span class="status-badge {% if branch.is_active %}status-open{% else %}status-closed{% endif %}">
+                    {% if branch.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="icon">📈</div>
+        <p>No branches registered yet.</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-2">
+        <a href="{% url 'organizations:dashboard' %}" class="btn btn-secondary">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
